@@ -105,3 +105,12 @@ begin
 exception
   when duplicate_object then null;
 end $$;
+
+-- ── 5. Multiple lists in one table ──────────────────────────
+-- Every item belongs to a named list ('shopping', 'camping', …). Adding a
+-- new list is a new tool in the UI — no schema change needed.
+alter table public.shared_shopping_items
+  add column if not exists list text not null default 'shopping';
+
+create index if not exists shared_shopping_items_list_idx
+  on public.shared_shopping_items (list, bought, created_at);

@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#14161c">
+<title>Drew &amp; Jill</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🛒</text></svg>">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<!-- ── Loading ────────────────────────────────────────────── -->
+<div id="screen-loading" class="screen">
+  <div class="spinner" aria-label="Loading"></div>
+</div>
+
+<!-- ── Signed out ─────────────────────────────────────────── -->
+<div id="screen-login" class="screen" hidden>
+  <div class="card" id="auth-root"></div>
+</div>
+
+<!-- ── Signed in, but not on the list ─────────────────────── -->
+<div id="screen-denied" class="screen" hidden>
+  <div class="card center">
+    <div class="logo">🚫</div>
+    <h1>Not on the list</h1>
+    <p class="muted">This app is just for Drew and Jill.<br>
+      You're signed in as <strong id="denied-email"></strong>.</p>
+    <button id="btn-signout-denied" class="btn btn-ghost">Sign out</button>
+  </div>
+</div>
+
+<!-- ── The app ────────────────────────────────────────────── -->
+<div id="screen-app" class="screen screen-app" hidden>
+  <header class="topbar">
+    <h1 id="tool-title">Shopping</h1>
+    <button id="btn-menu" class="avatar" aria-label="Account"></button>
+  </header>
+
+  <nav id="toolnav" class="toolnav" hidden></nav>
+
+  <main id="tool-root"></main>
+
+  <div id="menu" class="menu" hidden>
+    <p class="menu-email" id="menu-email"></p>
+    <button id="btn-signout" class="btn btn-ghost btn-sm">Sign out</button>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="config.js"></script>
+<script src="auth.js"></script>
+<script src="tools/shopping.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

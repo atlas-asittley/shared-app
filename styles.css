@@ -230,3 +230,6 @@ main .hint { margin: 10px 2px 0; }
   font-size: .92rem; white-space: pre-wrap; word-break: break-word;
 }
 .note-reply strong { color: var(--accent); }
+
+/* Starter-checklist button under an empty list */
+.empty + .btn[data-act="starter"] { max-width: 320px; margin: 0 auto; display: block; }

@@ -1,7 +1,7 @@
 # Drew & Jill — private shared app
 
 Static site (no build step) on GitHub Pages, backed by the shared Supabase project.
-Supabase email+password sign-in, locked to two people, one shared shopping list.
+Supabase email+password sign-in, locked to two people. Shared shopping list + a feedback box.
 
 Live: https://atlas-asittley.github.io/shared-app/
 
@@ -12,6 +12,7 @@ Live: https://atlas-asittley.github.io/shared-app/
 | `app.js` | session handling, the two-person gate, tool registry |
 | `auth.js` | sign in · create account · forgot password · set new password |
 | `tools/shopping.js` | the shopping list (add / check off / delete / clear) |
+| `tools/feedback.js` | notes to Claude, with the reply shown back on the note |
 | `config.js` | Supabase URL + public anon key + allowed emails + display names |
 | `styles.css` | dark, mobile-first |
 | `schema.sql` | tables + RLS (already applied) |
@@ -37,3 +38,14 @@ Re-run it any time; it's idempotent.
 
 Forgot a password? Reset it from the Supabase dashboard (Authentication → Users → … → Reset),
 or send a reset email from the app's Supabase project.
+
+## The feedback box
+Drew or Jill leave a note in the Notes tab; it lands in `shared_feedback` with `status='new'`.
+
+A systemd user timer on Drew's box (`shared-app-feedback.timer`, daily 08:47) runs
+`~/shared-app-ops/feedback-check.sh`. If any note is still `new`, it wakes the `claude-shared`
+tmux instance and hands it the notes. Claude handles what it safely can, sets `status` to
+`seen`/`done`, and writes a `reply` — which the app then shows under the note.
+
+Notes stay `new` until they're actually processed, so a missed run just means they're picked
+up the next day. Nothing is lost. Log: `~/shared-app-ops/feedback-check.log`.

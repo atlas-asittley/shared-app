@@ -192,3 +192,41 @@ main { padding: 16px 16px calc(28px + var(--safe-b)); max-width: 640px; margin: 
   color: var(--bad); font-size: .88rem;
 }
 .banner[hidden] { display: none; }
+
+/* ── notes to Claude ─────────────────────────────────────── */
+.composer { display: flex; flex-direction: column; gap: 10px; }
+.composer textarea {
+  width: 100%; padding: 13px 14px; resize: vertical;
+  font: inherit; color: var(--text);
+  background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius);
+}
+.composer textarea::placeholder { color: var(--muted); }
+.composer textarea:focus { outline: none; border-color: var(--accent); }
+.composer .btn { margin-top: 0; }
+main .hint { margin: 10px 2px 0; }
+
+.note {
+  background: var(--surface); border: 1px solid var(--line);
+  border-left: 3px solid var(--line);
+  border-radius: var(--radius); padding: 12px 8px 12px 14px; margin-bottom: 10px;
+}
+.note.status-seen { border-left-color: var(--accent); }
+.note.status-done { border-left-color: var(--good); }
+
+.note-head { display: flex; align-items: center; gap: 8px; }
+.note-head .item-meta { flex: 1; margin: 0; }
+.pill {
+  flex: none; padding: 2px 9px; border-radius: 999px;
+  font-size: .68rem; letter-spacing: .06em; text-transform: uppercase; font-weight: 700;
+  background: var(--surface-2); color: var(--muted);
+}
+.status-seen .pill { background: rgba(124,156,255,.18); color: var(--accent); }
+.status-done .pill { background: rgba(78,201,138,.18); color: var(--good); }
+
+.note-body { margin: 8px 0 0; white-space: pre-wrap; word-break: break-word; }
+.note-reply {
+  margin-top: 10px; padding: 10px 12px;
+  background: var(--surface-2); border-radius: 10px;
+  font-size: .92rem; white-space: pre-wrap; word-break: break-word;
+}
+.note-reply strong { color: var(--accent); }

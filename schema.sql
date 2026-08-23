@@ -74,3 +74,34 @@ begin
 exception
   when duplicate_object then null;
 end $$;
+
+-- ── 4. Feedback / notes to Claude ───────────────────────────
+-- Drew or Jill drop a note here; a daily job on Drew's box reads the
+-- 'new' ones, acts on them, and writes back a reply the app displays.
+create table if not exists public.shared_feedback (
+  id         uuid primary key default gen_random_uuid(),
+  body       text not null check (length(btrim(body)) between 1 and 2000),
+  created_at timestamptz not null default now(),
+  created_by text not null default lower(auth.jwt() ->> 'email'),
+  status     text not null default 'new' check (status in ('new', 'seen', 'done')),
+  reply      text,
+  replied_at timestamptz
+);
+
+create index if not exists shared_feedback_status_idx
+  on public.shared_feedback (status, created_at);
+
+alter table public.shared_feedback enable row level security;
+
+drop policy if exists "members full access" on public.shared_feedback;
+create policy "members full access" on public.shared_feedback
+  for all to authenticated
+  using (public.shared_is_member())
+  with check (public.shared_is_member());
+
+do $$
+begin
+  alter publication supabase_realtime add table public.shared_feedback;
+exception
+  when duplicate_object then null;
+end $$;

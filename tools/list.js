@@ -227,9 +227,9 @@
   window.SharedTools.push(makeList({
     id: 'shopping', list: 'shopping',
     title: 'Shopping', navLabel: '🛒 Shopping',
-    placeholder: 'Add an item…',
-    emptyIcon: '🧺', emptyText: 'The list is empty.<br>Add the first thing above.',
-    allDoneText: 'All done — nothing left to grab. 🎉',
+    placeholder: 'Add to the order…',
+    emptyIcon: '🧾', emptyText: 'No order yet.<br>Add the first thing above.',
+    allDoneText: 'Order up — nothing left to grab. 🎉',
     doneLabel: 'Bought', doneWord: 'bought', doneBy: 'Got by',
     starter: null
   }));
@@ -241,7 +241,7 @@
     emptyIcon: '⛺',
     emptyText: 'Nothing on the camping list yet.<br>Add things above, or start from the basics.',
     allDoneText: 'Everything\'s packed. Have fun. 🔥',
-    doneLabel: 'Sorted', doneWord: 'packed', doneBy: 'Sorted by',
+    doneLabel: 'Packed', doneWord: 'packed', doneBy: 'Packed by',
     starterLabel: 'Add the camping basics',
     starter: [
       'Tent', 'Stakes + mallet', 'Sleeping bags', 'Sleeping pads', 'Pillows',

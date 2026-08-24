@@ -14,7 +14,7 @@ Live: https://atlas-asittley.github.io/shared-app/
 | `tools/shopping.js` | the shopping list (add / check off / delete / clear) |
 | `tools/feedback.js` | notes to Claude, with the reply shown back on the note |
 | `config.js` | Supabase URL + public anon key + allowed emails + display names |
-| `styles.css` | dark, mobile-first |
+| `styles.css` | diner theme — see below |
 | `schema.sql` | tables + RLS (already applied) |
 
 ## How access is enforced
@@ -38,6 +38,19 @@ Re-run it any time; it's idempotent.
 
 Forgot a password? Reset it from the Supabase dashboard (Authentication → Users → … → Reset),
 or send a reset email from the app's Supabase project.
+
+## The look
+Modelled on the diner booth in Drew and Jill's house (photo, Aug 2026): mustard laminate
+tabletop with wood grain, black chairs, green chair legs, cream stucco wall, red-and-white
+checker, and the table tent reading 17.
+
+- signed out = a guest check on the wall
+- signed in = the tabletop, with each item as an order ticket
+- fonts: Lobster (the wordmark) + Bebas Neue (labels), from Google Fonts
+- notes are tickets: **Ordered** → **Cooking** → **Served**
+
+Any new tool should stay inside this: paper tickets on the mustard table, black menu-board
+labels, red for actions, green for done.
 
 ## The feedback box
 Drew or Jill leave a note in the Notes tab; it lands in `shared_feedback` with `status='new'`.

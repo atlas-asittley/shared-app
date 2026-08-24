@@ -3,9 +3,12 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="theme-color" content="#14161c">
+<meta name="theme-color" content="#1a1917">
 <title>Drew &amp; Jill</title>
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🛒</text></svg>">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🍽️</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Lobster&display=swap">
 <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -34,11 +37,13 @@
 <!-- ── The app ────────────────────────────────────────────── -->
 <div id="screen-app" class="screen screen-app" hidden>
   <header class="topbar">
+    <span class="tent" aria-label="Table 17">17</span>
     <h1 id="tool-title">Shopping</h1>
     <button id="btn-menu" class="avatar" aria-label="Account"></button>
   </header>
 
   <nav id="toolnav" class="toolnav" hidden></nav>
+  <div class="checker" aria-hidden="true"></div>
 
   <main id="tool-root"></main>
 

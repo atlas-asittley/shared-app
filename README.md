@@ -16,6 +16,7 @@ Live: https://atlas-asittley.github.io/shared-app/
 | `config.js` | Supabase URL + public anon key + allowed emails + display names |
 | `styles.css` | diner theme — see below |
 | `schema.sql` | tables + RLS (already applied) |
+| `stamp.sh` | content-hashes asset URLs in `index.html` (runs on pre-commit) |
 
 ## How access is enforced
 - `config.js` lists the allowed emails, but that's only for a friendly screen.
@@ -62,3 +63,17 @@ tmux instance and hands it the notes. Claude handles what it safely can, sets `s
 
 Notes stay `new` until they're actually processed, so a missed run just means they're picked
 up the next day. Nothing is lost. Log: `~/shared-app-ops/feedback-check.log`.
+
+## Caching
+GitHub Pages serves everything with `Cache-Control: max-age=600` and offers no way to change
+that. So a browser can hold a stale copy for up to 10 minutes — and, worse, could pair a new
+`index.html` with last deploy's `styles.css`.
+
+`stamp.sh` fixes the mismatch: it rewrites every local asset URL in `index.html` to
+`file.css?v=<md5 of that file>`. New content = new URL = guaranteed fresh fetch, while
+unchanged files keep their hash and stay cached. A `.git/hooks/pre-commit` hook runs it
+automatically, so it can't be forgotten.
+
+What it can't fix is `index.html` itself — that one page is subject to the 10-minute window
+no matter what, because it's the thing that carries the hashes. In practice a pull-to-refresh
+revalidates it immediately (the ETag makes that cheap).

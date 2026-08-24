@@ -9,7 +9,7 @@
   window.SharedTools.push({
     id: 'feedback',
     title: 'Notes',
-    navLabel: '💬 Notes',
+    navLabel: '🎫 Notes',
     mount: mount,
     destroy: destroy
   });
@@ -26,11 +26,11 @@
       '<p class="banner" id="fb-error" hidden></p>' +
       '<form id="fb-add" class="composer">' +
         '<textarea id="fb-text" rows="3" maxlength="2000"' +
-          ' placeholder="Something broken? Want a new feature? Tell Claude here."' +
+          ' placeholder="Something broken? Want something new? Send it back to the kitchen."' +
           ' aria-label="Note to Claude"></textarea>' +
         '<button type="submit" class="btn btn-primary" id="fb-send" data-label="Send">Send</button>' +
       '</form>' +
-      '<p class="muted hint">Checked once a day. You&rsquo;ll see a reply on the note itself.</p>' +
+      '<p class="muted hint">The kitchen checks once a day. The reply comes back on the ticket.</p>' +
       '<div id="fb-body"></div>';
 
     document.getElementById('fb-add').addEventListener('submit', onSend);
@@ -119,7 +119,7 @@
     return d.toLocaleDateString(undefined, { month: 'short', day: 'numeric' });
   }
 
-  var STATUS = { new: 'Waiting', seen: 'Looking at it', done: 'Done' };
+  var STATUS = { new: 'Ordered', seen: 'Cooking', done: 'Served' };
 
   function note(n) {
     return '<div class="note status-' + esc(n.status) + '" data-id="' + esc(n.id) + '">' +
@@ -139,7 +139,7 @@
     var body = document.getElementById('fb-body');
     if (!body) return;
     body.innerHTML = notes.length
-      ? '<div class="section-label"><span>Your notes</span></div>' + notes.map(note).join('')
+      ? '<div class="section-label"><span>Your tickets</span></div>' + notes.map(note).join('')
       : '';
   }
 })();

@@ -60,7 +60,7 @@
 
   function head(title, sub) {
     return '<div class="center">' +
-      '<div class="logo">🛒</div>' +
+      '<div class="logo">🍽️</div>' +
       '<h1>' + title + '</h1>' +
       '<p class="muted">' + sub + '</p>' +
       '</div>';
@@ -75,7 +75,7 @@
   /* Sign in */
   function mountLogin(prefill) {
     root.innerHTML =
-      head('Drew &amp; Jill', 'Same login as the city builder.') +
+      head('Drew &amp; Jill', 'Booth 17. Same login as the city builder.') +
       '<form class="loginform" id="f-login">' +
         field('in-email', 'email', 'Email', 'you@gmail.com', 'username', 'enterkeyhint="next"') +
         field('in-pass', 'password', 'Password', '••••••••', 'current-password', 'enterkeyhint="go"') +

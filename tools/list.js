@@ -229,7 +229,7 @@
     title: 'Shopping', navLabel: '🛒 Shopping',
     placeholder: 'Add to the order…',
     emptyIcon: '🧾', emptyText: 'No order yet.<br>Add the first thing above.',
-    allDoneText: 'Order up — nothing left to grab. 🎉',
+    allDoneText: 'Order up! <span class="ding">🔔</span><br>Nothing left to grab.',
     doneLabel: 'Bought', doneWord: 'bought', doneBy: 'Got by',
     starter: null
   }));
@@ -240,7 +240,7 @@
     placeholder: 'Add something to pack or buy…',
     emptyIcon: '⛺',
     emptyText: 'Nothing on the camping list yet.<br>Add things above, or start from the basics.',
-    allDoneText: 'Everything\'s packed. Have fun. 🔥',
+    allDoneText: 'Order up! <span class="ding">🔔</span><br>Everything is packed.',
     doneLabel: 'Packed', doneWord: 'packed', doneBy: 'Packed by',
     starterLabel: 'Add the camping basics',
     starter: [

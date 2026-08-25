@@ -107,10 +107,15 @@
 
     ctx.user = session.user;
     try { localStorage.setItem('shared:email', email); } catch (_) {}
-    var meta = session.user.user_metadata || {};
+    // The hat in the topbar belongs to whoever is on shift — put their
+    // initial on the band. (Span, not textContent: the hat is drawn with
+    // ::before/::after, so the letter needs its own layer to sit above.)
     var av = $('btn-menu');
-    if (meta.avatar_url) av.style.backgroundImage = 'url("' + meta.avatar_url + '")';
-    else av.textContent = ctx.shortName(email).charAt(0);
+    av.innerHTML = '';
+    var initial = document.createElement('span');
+    initial.className = 'avatar-initial';
+    initial.textContent = ctx.shortName(email).charAt(0);
+    av.appendChild(initial);
     $('menu-email').textContent = session.user.email;
 
     buildNav();

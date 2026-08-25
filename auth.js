@@ -59,8 +59,11 @@
   }
 
   function head(title, sub) {
-    return '<div class="center">' +
-      '<div class="logo">🍽️</div>' +
+    return '<div class="check-head" aria-hidden="true">' +
+        '<span>Guest Check</span><span>Table 17</span><span>No. 0417</span>' +
+      '</div>' +
+      '<div class="center">' +
+      '<div class="hat hat-lg" aria-hidden="true"></div>' +
       '<h1>' + title + '</h1>' +
       '<p class="muted">' + sub + '</p>' +
       '</div>';

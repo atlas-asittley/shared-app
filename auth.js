@@ -63,7 +63,7 @@
         '<span>Guest Check</span><span>Table 17</span><span>No. 0417</span>' +
       '</div>' +
       '<div class="center">' +
-      '<div class="hat hat-lg" aria-hidden="true"></div>' +
+      '<div class="logo">🍽️</div>' +
       '<h1>' + title + '</h1>' +
       '<p class="muted">' + sub + '</p>' +
       '</div>';

@@ -46,28 +46,21 @@ h1 { margin: 0; }
 .error { color: var(--red-lo); font-size: .9rem; font-weight: 600; }
 .error[hidden] { display: none; }
 
+/* What Drew and Jill write goes down in pen; what the app prints — labels,
+   counts, status — stays in menu-board type. Keeping those two apart is what
+   makes a row read as a ticket somebody scribbled rather than a table cell.
+   --pen is set per row from ctx.pen(), so each of them writes in their own. */
+.hand {
+  font-family: Caveat, "Segoe Script", "Bradley Hand", cursive;
+  font-size: 1.38rem; font-weight: 600; line-height: 1.28;
+  color: var(--pen, var(--ink));
+}
+
 /* Menu-board lettering for anything that acts as a label. */
 .sign {
   font-family: "Bebas Neue", Impact, "Haettenschweiler", sans-serif;
   letter-spacing: .04em;
 }
-
-/* ── the paper hat ───────────────────────────────────────────
-   A short-order cook's folded paper cap — the app's mark. One SVG
-   silhouette, drawn once here and reused at every size: pleated crown
-   flaring wider than the band, band with its red stripe. Inline, so
-   there's no image file to keep in sync and no extra request.
-
-   It carries no initial on purpose. At topbar size the band is a few
-   pixels tall and a letter on it turns into an illegible sliver that
-   wrecks the silhouette — who is signed in is named in the menu instead.
-   ──────────────────────────────────────────────────────────── */
-.hat {
-  flex: none;
-  width: 44px; height: 35px;
-  background: center / contain no-repeat url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 80'><g fill='%23fff' stroke='%231a1917' stroke-width='4.5' stroke-linejoin='round'><path d='M8 26 q14 -16 28 0 q14 -16 28 0 q14 -16 28 0 c0 14 -4 22 -6 30 h-72 c-2 -8 -6 -16 -6 -30 z'/><rect x='15' y='50' width='70' height='24' rx='3'/></g><path d='M36 29 v21 M64 29 v21' fill='none' stroke='%231a1917' stroke-width='2.5' opacity='.3'/><rect x='18.5' y='64' width='63' height='7.5' fill='%23c6382c'/></svg>");
-}
-.hat-lg { width: 82px; height: 66px; margin: 0 auto 12px; }
 
 /* red-and-white checkerboard band */
 .checker {
@@ -216,10 +209,12 @@ h1 { margin: 0; }
   box-shadow: 2px 2px 0 rgba(0,0,0,.35);
 }
 
-/* the account badge is the hat itself — whoever is signed in is on shift */
 .avatar {
-  width: 46px; height: 37px; flex: none;
-  padding: 0; border: 0; background-color: transparent;
+  width: 34px; height: 34px; flex: none;
+  border-radius: 50%; border: 2px solid var(--mustard);
+  background: var(--char-2) center/cover no-repeat;
+  color: var(--mustard);
+  font-family: "Bebas Neue", Impact, sans-serif; font-size: 1.05rem;
   cursor: pointer;
 }
 
@@ -230,11 +225,6 @@ h1 { margin: 0; }
   box-shadow: 4px 5px 0 rgba(26,25,23,.3);
 }
 .menu[hidden] { display: none; }
-.menu-shift {
-  margin: 0 0 3px;
-  font-family: "Bebas Neue", Impact, sans-serif;
-  font-size: 1rem; letter-spacing: .09em; color: var(--char);
-}
 .menu-email { margin: 0; font-size: .8rem; color: var(--muted); word-break: break-all; }
 
 /* ── menu board tabs ─────────────────────────────────────── */
@@ -281,8 +271,8 @@ main {
 /* ── order pad (add bar) ─────────────────────────────────── */
 .addbar { display: flex; gap: 8px; margin-bottom: 16px; }
 .addbar input {
-  flex: 1; min-width: 0; padding: 12px 13px;
-  font: inherit; color: var(--ink);
+  flex: 1; min-width: 0; padding: 9px 13px 7px;
+  color: var(--ink);
   background: var(--paper);
   border: 2px solid var(--char); border-radius: 5px;
   box-shadow: 2px 2px 0 rgba(26,25,23,.25);
@@ -324,9 +314,9 @@ main {
 .item.done .check { background: var(--green); border-color: var(--green); color: #fff; }
 
 .item-body { flex: 1; min-width: 0; }
-.item-name { display: block; word-break: break-word; font-weight: 600; }
+.item-name { display: block; word-break: break-word; }
 .item.done .item-name {
-  color: var(--muted); font-weight: 500;
+  color: var(--muted); opacity: .85;
   text-decoration: line-through; text-decoration-color: var(--red); text-decoration-thickness: 2px;
 }
 .item-meta {
@@ -380,8 +370,8 @@ main {
 /* ── comment card (notes) ────────────────────────────────── */
 .composer { display: flex; flex-direction: column; gap: 10px; }
 .composer textarea {
-  width: 100%; padding: 12px 13px; resize: vertical;
-  font: inherit; color: var(--ink);
+  width: 100%; padding: 10px 13px; resize: vertical;
+  color: var(--ink);
   background: var(--paper);
   border: 2px solid var(--char); border-radius: 5px;
   box-shadow: 2px 2px 0 rgba(26,25,23,.25);
@@ -412,7 +402,7 @@ main .hint { margin: 10px 2px 0; color: #6b5f42; }
 .status-seen .pill { background: var(--mustard); }
 .status-done .pill { background: var(--green); color: #fff; border-color: var(--green); }
 
-.note-body { margin: 9px 6px 0 0; white-space: pre-wrap; word-break: break-word; }
+.note-body { margin: 7px 6px 0 0; white-space: pre-wrap; word-break: break-word; }
 .note-reply {
   margin: 11px 6px 0 0; padding: 10px 12px;
   background: #f3ecd9; border-left: 3px solid var(--red);

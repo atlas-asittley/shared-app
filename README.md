@@ -46,8 +46,15 @@ tabletop with wood grain, black chairs, green chair legs, cream stucco wall, red
 checker, and the table tent reading 17.
 
 - signed out = a guest check on the wall, torn along a perforation above the stub
-- signed in = the tabletop, with each item as an order ticket
-- fonts: Lobster (the wordmark) + Bebas Neue (labels), from Google Fonts
+- signed in = the tabletop, with **every list drawn as one standard diner guest check**
+  (modelled on a real pad, photo Aug 2026): white header with the blue Guest Check wordmark
+  and red serial number, Date/Table/Guests/Server boxes (Table 17, Server = whoever is
+  signed in), the course strip, then the pale-green ruled pad where the items are the
+  lines. The top line is the add box; blank filler lines keep the pad shape; Tax/Total
+  close it out (Total = items left). The serial and printer's mark are hashed from the
+  list key, so each list is a different check off the same book.
+- fonts: Lobster (the wordmark) + Bebas Neue (labels) + Rammetto One (the Guest Check
+  wordmark), from Google Fonts
 - notes are tickets: **Ordered** → **Cooking** → **Served**
 
 Other fixtures: `.check-head` is the header off a real guest check (GUEST CHECK / TABLE 17 /

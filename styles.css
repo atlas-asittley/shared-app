@@ -258,69 +258,149 @@ main {
   min-height: calc(100dvh - 132px);
 }
 
-/* ── order pad (add bar) ─────────────────────────────────── */
-.addbar { display: flex; gap: 8px; margin-bottom: 16px; }
-.addbar input {
-  flex: 1; min-width: 0; padding: 12px 13px;
-  font: inherit; color: var(--ink);
-  background: var(--paper);
-  border: 2px solid var(--char); border-radius: 5px;
-  box-shadow: 2px 2px 0 rgba(26,25,23,.25);
-}
-.addbar input::placeholder { color: #b0a488; }
-.addbar input:focus { outline: none; border-color: var(--red); }
-.addbar button {
-  flex: none; width: 50px;
-  font-size: 1.6rem; line-height: 1;
-  border: 2px solid var(--char); border-radius: 5px;
-  background: var(--red); color: #fff;
-  box-shadow: 2px 2px 0 rgba(26,25,23,.35);
-  cursor: pointer;
-}
-.addbar button:active { transform: translate(2px,2px); box-shadow: none; }
-.addbar button:disabled { opacity: .5; }
-
-/* ── order tickets ───────────────────────────────────────── */
-.list { list-style: none; margin: 0 0 6px; padding: 0; display: flex; flex-direction: column; gap: 8px; }
-
-.item {
-  display: flex; align-items: center; gap: 11px;
-  padding: 11px 6px 11px 12px;
-  background: var(--paper);
-  border: 2px solid var(--char);
-  border-left: 6px solid var(--red);
-  border-radius: 4px;
-  box-shadow: 3px 3px 0 rgba(26,25,23,.22);
-}
-.item.pending { opacity: .55; }
-.item.done { border-left-color: var(--green); background: #f6f1e2; }
-
-.check {
-  flex: none; width: 27px; height: 27px; padding: 0;
-  border: 2px solid var(--char); border-radius: 4px;
-  background: #fff; color: transparent;
-  font-size: 16px; line-height: 1; cursor: pointer;
-}
-.item.done .check { background: var(--green); border-color: var(--green); color: #fff; }
-
-.item-body { flex: 1; min-width: 0; }
-.item-name { display: block; word-break: break-word; font-weight: 600; }
-.item.done .item-name {
-  color: var(--muted); font-weight: 500;
-  text-decoration: line-through; text-decoration-color: var(--red); text-decoration-thickness: 2px;
-}
+/* metadata line + delete ✕, shared by check rows and note cards */
 .item-meta {
-  display: block; margin-top: 2px;
+  display: block; margin-top: 1px;
   font-family: "Bebas Neue", Impact, sans-serif;
-  font-size: .8rem; letter-spacing: .05em; color: var(--muted);
+  font-size: .78rem; letter-spacing: .05em; color: var(--muted);
 }
-
 .del {
   flex: none; width: 36px; height: 36px; padding: 0;
   background: transparent; border: 0; color: #9a8f77;
   font-size: 1.05rem; cursor: pointer; border-radius: 5px;
 }
 .del:active { background: rgba(198,56,44,.16); color: var(--red); }
+
+/* ── the guest check ─────────────────────────────────────────
+   Every list is one standard diner guest check (photo, Aug 2026):
+   white header with the blue "Guest Check" wordmark and red serial
+   number, the Date/Table/Guests/Server boxes, the course strip, then
+   the pale-green pad with blue rules where the items are the lines.
+   ──────────────────────────────────────────────────────────── */
+.gcheck {
+  --gc-blue:  #4193c6;   /* printed blue           */
+  --gc-rule:  #85bcd9;   /* rule lines             */
+  --gc-red:   #e4796d;   /* stamped serial number  */
+  --gc-paper: #f8f6ee;   /* white header stock     */
+  --gc-pad:   #cfe2d6;   /* the green pad          */
+  max-width: 480px; margin: 0 auto;
+  background: var(--gc-paper);
+  border-radius: 3px;
+  box-shadow: 4px 5px 0 rgba(26,25,23,.25);
+  overflow: hidden;
+}
+
+.gc-top { padding: 12px 14px 0; }
+.gc-brand { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; }
+.gc-title {
+  font-family: "Rammetto One", "Cooper Black", Georgia, serif;
+  font-size: 1.3rem; color: var(--gc-blue); white-space: nowrap;
+}
+.gc-num {
+  font-family: "Bebas Neue", Impact, sans-serif;
+  font-size: 1.35rem; letter-spacing: .14em; color: var(--gc-red);
+}
+.gc-info { width: 100%; border-collapse: collapse; margin-top: 7px; }
+.gc-info th, .gc-info td { border: 1px solid var(--gc-rule); padding: 2px 7px; text-align: left; }
+.gc-info th { font-size: .66rem; font-weight: 600; color: var(--gc-blue); }
+.gc-info td { font-size: .85rem; font-weight: 600; color: var(--ink); height: 21px; }
+.gc-strip {
+  padding: 5px 1px 6px;
+  font-size: .6rem; font-weight: 700; letter-spacing: .05em;
+  color: var(--gc-blue);
+}
+
+/* the green pad: every child is one ruled line */
+.gc-pad { position: relative; background: var(--gc-pad); padding: 0 12px 12px; }
+.gc-pad::before {
+  /* the vertical rule fencing off the check-mark column */
+  content: ""; position: absolute; top: 0; bottom: 12px; left: 50px;
+  width: 1px; background: var(--gc-rule);
+}
+.gc-add, .gc-pad .item, .gc-sec, .gc-msg, .gc-fill, .gc-starter, .gc-sum {
+  display: flex; align-items: center;
+  min-height: 46px;
+  border-bottom: 1px solid var(--gc-rule);
+}
+
+/* the top line is where you write the next item */
+.gc-add { gap: 0; }
+.gc-add button {
+  flex: none; width: 27px; height: 27px; padding: 0; margin: 0 13px 0 3px;
+  font-size: 1.25rem; line-height: 1;
+  border: 0; border-radius: 4px;
+  background: var(--red); color: #fff;
+  box-shadow: 1px 1px 0 rgba(26,25,23,.3);
+  cursor: pointer;
+}
+.gc-add button:active { transform: translate(1px,1px); box-shadow: none; }
+.gc-add button:disabled { opacity: .5; }
+.gc-add input {
+  flex: 1; min-width: 0; padding: 8px 6px 8px 0;
+  font: inherit; font-weight: 600; color: var(--ink);
+  background: transparent; border: 0; outline: none;
+}
+.gc-add input::placeholder { color: #8fb0a6; font-weight: 500; }
+
+/* items are lines on the pad */
+.item { gap: 0; padding: 5px 0; }
+.item.pending { opacity: .55; }
+.check {
+  flex: none; width: 27px; height: 27px; padding: 0; margin: 0 13px 0 3px;
+  border: 2px solid var(--gc-rule); border-radius: 4px;
+  background: transparent; color: transparent;
+  font-size: 15px; line-height: 1; cursor: pointer;
+}
+.item.done .check { background: var(--green); border-color: var(--green); color: #fff; }
+.item-body { flex: 1; min-width: 0; }
+.item-name { display: block; word-break: break-word; font-weight: 600; }
+.item.done .item-name {
+  color: var(--muted);
+  text-decoration: line-through; text-decoration-color: var(--gc-red); text-decoration-thickness: 2px;
+}
+.gc-pad .item-meta { color: #6f958a; }
+.gc-pad .del { color: #7fa0ad; width: 34px; height: 34px; }
+
+/* printed section row: BOUGHT (2) · clear */
+.gc-sec {
+  justify-content: space-between;
+  font-family: "Bebas Neue", Impact, sans-serif;
+  font-size: .92rem; letter-spacing: .09em; color: var(--gc-blue);
+  padding-left: 3px;
+}
+.gc-sec button {
+  font-family: "Bebas Neue", Impact, sans-serif;
+  font-size: .88rem; letter-spacing: .07em;
+  background: none; border: 0; color: var(--gc-red);
+  padding: 4px 4px; cursor: pointer;
+}
+
+/* a message printed across a line, and blank filler lines */
+.gc-msg {
+  justify-content: center; text-align: center;
+  padding: 8px 6px; font-size: .92rem; color: var(--gc-blue);
+}
+.gc-starter {
+  width: 100%; justify-content: center;
+  font: inherit; font-size: .92rem; font-weight: 700; color: var(--gc-blue);
+  background: none; border: 0;
+  border-bottom: 1px solid var(--gc-rule);
+  cursor: pointer;
+}
+.gc-starter:active { opacity: .6; }
+
+/* tax / total, then the printer's mark */
+.gc-sum {
+  justify-content: flex-end; gap: 16px;
+  padding-right: 5px;
+  font-weight: 700; color: var(--gc-blue);
+}
+.gc-grand { font-size: 1.05rem; }
+.gc-grand .gc-count { color: var(--ink); }
+.gc-code {
+  padding: 6px 2px 0; text-align: right;
+  font-size: .6rem; font-weight: 700; color: var(--gc-blue); opacity: .8;
+}
 
 /* ── section headings, like a chalk line on the board ────── */
 .section-label {

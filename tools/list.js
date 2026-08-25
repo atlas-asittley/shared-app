@@ -15,14 +15,39 @@
       sb = context.sb;
       items = [];
 
+      // Serial number and printer's mark, stable per list — same trick as a
+      // real pad, where every check in the book has its own number.
+      var h = 0;
+      for (var i = 0; i < spec.list.length; i++) h = (h * 31 + spec.list.charCodeAt(i)) >>> 0;
+      var num = String(100000 + h % 900000);
+      var d = new Date();
+
       root.innerHTML =
         '<p class="banner" id="l-error" hidden></p>' +
-        '<form class="addbar" id="l-add">' +
-          '<input id="l-input" placeholder="' + spec.placeholder + '" autocomplete="off"' +
-            ' enterkeyhint="done" maxlength="200" aria-label="New item">' +
-          '<button type="submit" aria-label="Add">+</button>' +
-        '</form>' +
-        '<div id="l-body"></div>';
+        '<div class="gcheck">' +
+          '<div class="gc-top">' +
+            '<div class="gc-brand"><span class="gc-title">Guest Check</span>' +
+              '<span class="gc-num">' + num + '</span></div>' +
+            '<table class="gc-info" aria-hidden="true">' +
+              '<tr><th>Date</th><th>Table</th><th>Guests</th><th>Server</th></tr>' +
+              '<tr><td>' + (d.getMonth() + 1) + '/' + d.getDate() + '</td>' +
+                '<td>17</td><td>2</td>' +
+                '<td>' + esc(ctx.shortName(ctx.user.email)) + '</td></tr>' +
+            '</table>' +
+            '<div class="gc-strip" aria-hidden="true">APPT - SOUP/SAL - ENTREE - VEG/POT - DESSERT - BEV</div>' +
+          '</div>' +
+          '<div class="gc-pad">' +
+            // The add form is the top line of the pad. It lives outside render()
+            // so a realtime refresh never rebuilds it mid-typing.
+            '<form class="gc-add" id="l-add">' +
+              '<button type="submit" aria-label="Add">+</button>' +
+              '<input id="l-input" placeholder="' + spec.placeholder + '" autocomplete="off"' +
+                ' enterkeyhint="done" maxlength="200" aria-label="New item">' +
+            '</form>' +
+            '<div id="l-body"></div>' +
+            '<div class="gc-code" aria-hidden="true">G' + String(1000 + h % 9000) + '</div>' +
+          '</div>' +
+        '</div>';
 
       document.getElementById('l-add').addEventListener('submit', onAdd);
       root.addEventListener('click', onClick);
@@ -177,7 +202,7 @@
       var who = it.bought
         ? spec.doneBy + ' ' + ctx.shortName(it.bought_by)
         : 'Added by ' + ctx.shortName(it.created_by);
-      return '<li class="item' + (it.bought ? ' done' : '') + (it.pending ? ' pending' : '') +
+      return '<div class="item' + (it.bought ? ' done' : '') + (it.pending ? ' pending' : '') +
                '" data-id="' + esc(it.id) + '">' +
           '<button class="check" data-act="toggle" aria-label="Mark ' + spec.doneWord + '">✓</button>' +
           '<span class="item-body">' +
@@ -185,7 +210,7 @@
             '<span class="item-meta">' + esc(who) + '</span>' +
           '</span>' +
           '<button class="del" data-act="delete" aria-label="Delete">✕</button>' +
-        '</li>';
+        '</div>';
     }
 
     function render() {
@@ -195,22 +220,38 @@
       var todo = items.filter(function (i) { return !i.bought; });
       var done = items.filter(function (i) { return i.bought; });
       var html = '';
+      var lines = 0;   // rows drawn, so filler can pad the check out
+
+      html += todo.map(row).join('');
+      lines += todo.length;
 
       if (!items.length) {
-        html = '<div class="empty"><div class="logo">' + spec.emptyIcon + '</div>' +
-               '<p>' + spec.emptyText + '</p></div>';
+        html += '<div class="gc-msg">' + spec.emptyText + '</div>';
+        lines += 2;
         if (spec.starter && spec.starter.length) {
-          html += '<button class="btn btn-ghost" data-act="starter">' + spec.starterLabel + '</button>';
+          html += '<button class="gc-starter" data-act="starter">+ ' + spec.starterLabel + '</button>';
+          lines += 1;
         }
-      } else {
-        html += '<ul class="list">' + todo.map(row).join('') + '</ul>';
-        if (!todo.length) html += '<p class="empty">' + spec.allDoneText + '</p>';
-        if (done.length) {
-          html += '<div class="section-label"><span>' + spec.doneLabel + ' (' + done.length + ')</span>' +
-                  '<button data-act="clear">Clear</button></div>' +
-                  '<ul class="list">' + done.map(row).join('') + '</ul>';
-        }
+      } else if (!todo.length) {
+        html += '<div class="gc-msg">' + spec.allDoneText + '</div>';
+        lines += 2;
       }
+
+      if (done.length) {
+        html += '<div class="gc-sec"><span>' + spec.doneLabel + ' (' + done.length + ')</span>' +
+                '<button data-act="clear">Clear</button></div>' +
+                done.map(row).join('');
+        lines += 1 + done.length;
+      }
+
+      // A real check is a fixed pad, not a list that grows from nothing —
+      // blank ruled lines keep the shape when there's little written on it.
+      for (; lines < 8; lines++) html += '<div class="gc-fill"></div>';
+
+      html += '<div class="gc-sum"><span>Tax</span></div>' +
+              '<div class="gc-sum gc-grand"><span>Total</span>' +
+                '<span class="gc-count">' + todo.length + ' left</span></div>';
+
       body.innerHTML = html;
     }
 
@@ -228,7 +269,7 @@
     id: 'shopping', list: 'shopping',
     title: 'Shopping', navLabel: '🛒 Shopping',
     placeholder: 'Add to the order…',
-    emptyIcon: '🧾', emptyText: 'No order yet.<br>Add the first thing above.',
+    emptyText: 'No order yet.<br>Add the first thing above.',
     allDoneText: 'Order up! <span class="ding">🔔</span><br>Nothing left to grab.',
     doneLabel: 'Bought', doneWord: 'bought', doneBy: 'Got by',
     starter: null
@@ -238,7 +279,6 @@
     id: 'camping', list: 'camping',
     title: 'Camping', navLabel: '⛺ Camping',
     placeholder: 'Add something to pack or buy…',
-    emptyIcon: '⛺',
     emptyText: 'Nothing on the camping list yet.<br>Add things above, or start from the basics.',
     allDoneText: 'Order up! <span class="ding">🔔</span><br>Everything is packed.',
     doneLabel: 'Packed', doneWord: 'packed', doneBy: 'Packed by',

@@ -15,4 +15,11 @@ window.SHARED_CONFIG = {
     'asittley@gmail.com': 'Drew',
     'jilllechien@gmail.com': 'Jill',
   },
+
+  // Two people sharing one order pad, so: two pens. Blue ballpoint and black.
+  // Whoever added a line, it shows up in their ink.
+  PENS: {
+    'asittley@gmail.com': '#2b4a8f',
+    'jilllechien@gmail.com': '#26221f',
+  },
 };

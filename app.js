@@ -87,6 +87,12 @@
       if (named) return named;
       var n = key.split('@')[0].replace(/[._\d]+/g, ' ').trim();
       return n.charAt(0).toUpperCase() + n.slice(1);
+    },
+    // Whose pen wrote this. The value goes into a style attribute, so only a
+    // plain hex colour is let through — anything else falls back to house ink.
+    pen: function (email) {
+      var c = (cfg.PENS || {})[(email || '').trim().toLowerCase()];
+      return /^#[0-9a-f]{3,8}$/i.test(c || '') ? c : 'var(--ink)';
     }
   };
 
@@ -107,11 +113,10 @@
 
     ctx.user = session.user;
     try { localStorage.setItem('shared:email', email); } catch (_) {}
-    // The hat in the topbar is the badge for whoever is on shift; the menu
-    // behind it is where that actually gets spelled out.
-    var name = ctx.shortName(email);
-    $('btn-menu').setAttribute('aria-label', 'Account — ' + name + ' is on shift');
-    $('menu-shift').textContent = name + ' is on shift';
+    var meta = session.user.user_metadata || {};
+    var av = $('btn-menu');
+    if (meta.avatar_url) av.style.backgroundImage = 'url("' + meta.avatar_url + '")';
+    else av.textContent = ctx.shortName(email).charAt(0);
     $('menu-email').textContent = session.user.email;
 
     buildNav();

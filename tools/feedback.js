@@ -25,7 +25,7 @@
     root.innerHTML =
       '<p class="banner" id="fb-error" hidden></p>' +
       '<form id="fb-add" class="composer">' +
-        '<textarea id="fb-text" rows="3" maxlength="2000"' +
+        '<textarea id="fb-text" class="hand" rows="3" maxlength="2000"' +
           ' placeholder="Something broken? Want something new? Send it back to the kitchen."' +
           ' aria-label="Note to Claude"></textarea>' +
         '<button type="submit" class="btn btn-primary" id="fb-send" data-label="Send">Send</button>' +
@@ -122,13 +122,14 @@
   var STATUS = { new: 'Ordered', seen: 'Cooking', done: 'Served' };
 
   function note(n) {
-    return '<div class="note status-' + esc(n.status) + '" data-id="' + esc(n.id) + '">' +
+    return '<div class="note status-' + esc(n.status) + '" data-id="' + esc(n.id) + '"' +
+      ' style="--pen:' + ctx.pen(n.created_by) + '">' +
       '<div class="note-head">' +
         '<span class="pill">' + esc(STATUS[n.status] || n.status) + '</span>' +
         '<span class="item-meta">' + esc(ctx.shortName(n.created_by)) + ' · ' + esc(when(n.created_at)) + '</span>' +
         '<button class="del" data-act="delete" aria-label="Delete note">✕</button>' +
       '</div>' +
-      '<p class="note-body">' + esc(n.body) + '</p>' +
+      '<p class="note-body hand">' + esc(n.body) + '</p>' +
       (n.reply
         ? '<div class="note-reply"><strong>Claude:</strong> ' + esc(n.reply) + '</div>'
         : '') +

@@ -107,15 +107,11 @@
 
     ctx.user = session.user;
     try { localStorage.setItem('shared:email', email); } catch (_) {}
-    // The hat in the topbar belongs to whoever is on shift — put their
-    // initial on the band. (Span, not textContent: the hat is drawn with
-    // ::before/::after, so the letter needs its own layer to sit above.)
-    var av = $('btn-menu');
-    av.innerHTML = '';
-    var initial = document.createElement('span');
-    initial.className = 'avatar-initial';
-    initial.textContent = ctx.shortName(email).charAt(0);
-    av.appendChild(initial);
+    // The hat in the topbar is the badge for whoever is on shift; the menu
+    // behind it is where that actually gets spelled out.
+    var name = ctx.shortName(email);
+    $('btn-menu').setAttribute('aria-label', 'Account — ' + name + ' is on shift');
+    $('menu-shift').textContent = name + ' is on shift';
     $('menu-email').textContent = session.user.email;
 
     buildNav();

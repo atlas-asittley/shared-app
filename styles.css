@@ -53,40 +53,21 @@ h1 { margin: 0; }
 }
 
 /* ── the paper hat ───────────────────────────────────────────
-   A short-order cook's folded paper cap. This is the app's mark:
-   it wears the crown on the auth cards and sits on the topbar as
-   the "who's on shift" badge. Pure CSS so it scales and recolours
-   with the theme — reuse it in new tools instead of an emoji.
+   A short-order cook's folded paper cap — the app's mark. One SVG
+   silhouette, drawn once here and reused at every size: pleated crown
+   flaring wider than the band, band with its red stripe. Inline, so
+   there's no image file to keep in sync and no extra request.
+
+   It carries no initial on purpose. At topbar size the band is a few
+   pixels tall and a letter on it turns into an illegible sliver that
+   wrecks the silhouette — who is signed in is named in the menu instead.
    ──────────────────────────────────────────────────────────── */
 .hat {
-  position: relative; flex: none;
-  width: 54px; height: 40px;
-  --hat-line: 2px;
+  flex: none;
+  width: 44px; height: 35px;
+  background: center / contain no-repeat url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 80'><g fill='%23fff' stroke='%231a1917' stroke-width='4.5' stroke-linejoin='round'><path d='M8 26 q14 -16 28 0 q14 -16 28 0 q14 -16 28 0 c0 14 -4 22 -6 30 h-72 c-2 -8 -6 -16 -6 -30 z'/><rect x='15' y='50' width='70' height='24' rx='3'/></g><path d='M36 29 v21 M64 29 v21' fill='none' stroke='%231a1917' stroke-width='2.5' opacity='.3'/><rect x='18.5' y='64' width='63' height='7.5' fill='%23c6382c'/></svg>");
 }
-/* the crown: folded paper, flaring wider than the band */
-.hat::before {
-  content: "";
-  position: absolute; left: 0; right: 0; top: 0; bottom: 14px;
-  background: #fff;
-  background-image: repeating-linear-gradient(94deg,
-    rgba(26,25,23,.11) 0 1px, rgba(0,0,0,0) 1px 9px);
-  border: var(--hat-line) solid var(--char);
-  border-bottom: 0;
-  border-radius: 60% 60% 6px 6px / 88% 88% 6px 6px;
-}
-/* the band, with its stripe */
-.hat::after {
-  content: "";
-  position: absolute; left: 9%; right: 9%; bottom: 0;
-  height: 16px;
-  background: #fff;
-  border: var(--hat-line) solid var(--char);
-  border-radius: 3px;
-  box-shadow: inset 0 -5px 0 var(--red);
-}
-.hat-lg { width: 78px; height: 58px; margin: 0 auto 10px; --hat-line: 2.5px; }
-.hat-lg::before { bottom: 20px; }
-.hat-lg::after  { height: 23px; box-shadow: inset 0 -7px 0 var(--red); }
+.hat-lg { width: 82px; height: 66px; margin: 0 auto 12px; }
 
 /* red-and-white checkerboard band */
 .checker {
@@ -235,22 +216,11 @@ h1 { margin: 0; }
   box-shadow: 2px 2px 0 rgba(0,0,0,.35);
 }
 
-/* whoever is signed in is the one on shift, so they wear the hat —
-   their initial is written on the band. */
+/* the account badge is the hat itself — whoever is signed in is on shift */
 .avatar {
-  width: 46px; height: 36px; flex: none;
-  padding: 0; border: 0; background: transparent;
+  width: 46px; height: 37px; flex: none;
+  padding: 0; border: 0; background-color: transparent;
   cursor: pointer;
-  --hat-line: 2px;
-}
-.avatar::before { bottom: 15px; }
-.avatar::after  { height: 17px; box-shadow: inset 0 -5px 0 var(--red); }
-/* the initial rides on the band, clear of the stripe */
-.avatar-initial {
-  position: absolute; left: 0; right: 0; bottom: 7px; z-index: 1;
-  font-family: "Bebas Neue", Impact, sans-serif;
-  font-size: .8rem; line-height: 1; letter-spacing: .07em;
-  color: var(--char); text-align: center;
 }
 
 .menu {
@@ -260,6 +230,11 @@ h1 { margin: 0; }
   box-shadow: 4px 5px 0 rgba(26,25,23,.3);
 }
 .menu[hidden] { display: none; }
+.menu-shift {
+  margin: 0 0 3px;
+  font-family: "Bebas Neue", Impact, sans-serif;
+  font-size: 1rem; letter-spacing: .09em; color: var(--char);
+}
 .menu-email { margin: 0; font-size: .8rem; color: var(--muted); word-break: break-all; }
 
 /* ── menu board tabs ─────────────────────────────────────── */

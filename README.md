@@ -45,13 +45,27 @@ Modelled on the diner booth in Drew and Jill's house (photo, Aug 2026): mustard 
 tabletop with wood grain, black chairs, green chair legs, cream stucco wall, red-and-white
 checker, and the table tent reading 17.
 
-- signed out = a guest check on the wall
+- signed out = a guest check on the wall, torn along a perforation above the stub
 - signed in = the tabletop, with each item as an order ticket
 - fonts: Lobster (the wordmark) + Bebas Neue (labels), from Google Fonts
 - notes are tickets: **Ordered** → **Cooking** → **Served**
 
+**The house mark is the paper hat** — a short-order cook's folded cap, drawn in pure CSS as
+`.hat` (no image file, so it scales and recolours with the theme). It appears three ways:
+
+- `.hat.hat-lg` — the crown of every auth card
+- `.avatar.hat` — the topbar badge. Whoever is signed in is the one on shift, so their
+  initial is written on the band (`.avatar-initial`, its own layer so it sits above the
+  `::before`/`::after` the hat is built from)
+- the favicon, as the same shape in inline SVG
+
+Other fixtures: `.check-head` is the header off a real guest check (GUEST CHECK / TABLE 17 /
+No. 0417), the tabletop carries a couple of coffee rings in its background, and `.ding` is
+the bell on the pass — it rings when a list comes up empty.
+
 Any new tool should stay inside this: paper tickets on the mustard table, black menu-board
-labels, red for actions, green for done.
+labels, red for actions, green for done. Reach for `.hat` rather than an emoji when
+something needs the app's mark on it.
 
 ## The feedback box
 Drew or Jill leave a note in the Notes tab; it lands in `shared_feedback` with `status='new'`.

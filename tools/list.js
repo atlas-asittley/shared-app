@@ -18,7 +18,7 @@
       root.innerHTML =
         '<p class="banner" id="l-error" hidden></p>' +
         '<form class="addbar" id="l-add">' +
-          '<input id="l-input" class="hand" placeholder="' + spec.placeholder + '" autocomplete="off"' +
+          '<input id="l-input" placeholder="' + spec.placeholder + '" autocomplete="off"' +
             ' enterkeyhint="done" maxlength="200" aria-label="New item">' +
           '<button type="submit" aria-label="Add">+</button>' +
         '</form>' +
@@ -178,11 +178,10 @@
         ? spec.doneBy + ' ' + ctx.shortName(it.bought_by)
         : 'Added by ' + ctx.shortName(it.created_by);
       return '<li class="item' + (it.bought ? ' done' : '') + (it.pending ? ' pending' : '') +
-               '" data-id="' + esc(it.id) + '"' +
-               ' style="--pen:' + ctx.pen(it.created_by) + '">' +
+               '" data-id="' + esc(it.id) + '">' +
           '<button class="check" data-act="toggle" aria-label="Mark ' + spec.doneWord + '">✓</button>' +
           '<span class="item-body">' +
-            '<span class="item-name hand">' + esc(it.name) + '</span>' +
+            '<span class="item-name">' + esc(it.name) + '</span>' +
             '<span class="item-meta">' + esc(who) + '</span>' +
           '</span>' +
           '<button class="del" data-act="delete" aria-label="Delete">✕</button>' +

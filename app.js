@@ -87,12 +87,6 @@
       if (named) return named;
       var n = key.split('@')[0].replace(/[._\d]+/g, ' ').trim();
       return n.charAt(0).toUpperCase() + n.slice(1);
-    },
-    // Whose pen wrote this. The value goes into a style attribute, so only a
-    // plain hex colour is let through — anything else falls back to house ink.
-    pen: function (email) {
-      var c = (cfg.PENS || {})[(email || '').trim().toLowerCase()];
-      return /^#[0-9a-f]{3,8}$/i.test(c || '') ? c : 'var(--ink)';
     }
   };
 

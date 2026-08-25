@@ -50,19 +50,6 @@ checker, and the table tent reading 17.
 - fonts: Lobster (the wordmark) + Bebas Neue (labels), from Google Fonts
 - notes are tickets: **Ordered** → **Cooking** → **Served**
 
-**Handwriting is the tie-in.** A diner ticket reads as a diner ticket because a person wrote
-it in pen, so what Drew and Jill write is set in a handwriting face (`.hand`, Caveat) while
-everything the app prints — labels, counts, statuses, Claude's replies — stays in menu-board
-type. Keeping those two apart is what makes a row read as a scribbled ticket rather than a
-table cell. It covers item names, note bodies, and the inputs, so it feels like writing on
-the pad.
-
-**They each write in their own pen.** `PENS` in `config.js` maps an email to an ink colour
-(blue ballpoint for Drew, black for Jill). Rows carry it as `--pen`, set from
-`ctx.pen(email)`, which only lets a plain hex colour through since the value lands in a
-style attribute. You can tell who added what at a glance — the "Added by …" line stays put
-so colour is never the only signal.
-
 Other fixtures: `.check-head` is the header off a real guest check (GUEST CHECK / TABLE 17 /
 No. 0417), the tabletop carries a couple of coffee rings in its background, and `.ding` is
 the bell on the pass — it rings when a list comes up empty.

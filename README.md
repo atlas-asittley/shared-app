@@ -50,14 +50,20 @@ checker, and the table tent reading 17.
 - fonts: Lobster (the wordmark) + Bebas Neue (labels), from Google Fonts
 - notes are tickets: **Ordered** → **Cooking** → **Served**
 
-**The house mark is the paper hat** — a short-order cook's folded cap, drawn in pure CSS as
-`.hat` (no image file, so it scales and recolours with the theme). It appears three ways:
+**The house mark is the paper hat** — a short-order cook's folded cap: pleated crown flaring
+wider than the band, band with its red stripe. It is one inline SVG silhouette set as the
+background of `.hat`, so there's no image file to keep in sync and no extra request. It
+appears three ways:
 
 - `.hat.hat-lg` — the crown of every auth card
-- `.avatar.hat` — the topbar badge. Whoever is signed in is the one on shift, so their
-  initial is written on the band (`.avatar-initial`, its own layer so it sits above the
-  `::before`/`::after` the hat is built from)
-- the favicon, as the same shape in inline SVG
+- `.avatar.hat` — the topbar badge, standing for whoever is on shift
+- the favicon, the same silhouette on a mustard chip
+
+The hat carries **no initial**. It was tried and cut: at topbar size the band is only a few
+pixels tall, so a letter on it becomes an unreadable sliver that wrecks the silhouette. Who
+is signed in is spelled out in the account menu instead (`.menu-shift`, "Drew is on shift").
+Keep the mark clean if you reuse it — it only reads at small sizes because nothing is
+competing with the outline.
 
 Other fixtures: `.check-head` is the header off a real guest check (GUEST CHECK / TABLE 17 /
 No. 0417), the tabletop carries a couple of coffee rings in its background, and `.ding` is

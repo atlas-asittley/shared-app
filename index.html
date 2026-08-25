@@ -9,6 +9,38 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Lobster&family=Rammetto+One&display=swap">
+<script>
+/* ── self-update ───────────────────────────────────────────────
+   Every asset URL carries a content hash, but index.html cannot — it is the
+   file carrying the hashes. GitHub Pages pins it at max-age=600 and allows
+   no custom headers, and an iOS home-screen shortcut has no reload button
+   and no pull-to-refresh, so a stale copy there can pin the whole app to an
+   old build indefinitely.
+
+   So the page checks itself: version.json is fetched with no-store, and if
+   the deployed build differs from the one baked in below, we reload through
+   a URL the cache has never seen. The sessionStorage guard is keyed to the
+   build we are escaping FROM, so a stale edge can never cause a reload loop.
+   ────────────────────────────────────────────────────────────── */
+(function () {
+  var BUILD = '733e2fc1ec';
+  window.SHARED_BUILD = BUILD;
+  window.SharedReload = function () {
+    location.replace(location.pathname + '?r=' + Date.now());
+  };
+  if (!window.fetch || !BUILD) return;
+  try { if (sessionStorage.getItem('shared:from') === BUILD) return; } catch (_) {}
+
+  fetch('version.json?t=' + Date.now(), { cache: 'no-store' })
+    .then(function (r) { return r.ok ? r.json() : null; })
+    .then(function (v) {
+      if (!v || !v.build || v.build === BUILD) return;
+      try { sessionStorage.setItem('shared:from', BUILD); } catch (_) {}
+      location.replace(location.pathname + '?b=' + encodeURIComponent(v.build));
+    })
+    .catch(function () {});
+})();
+</script>
 <link rel="stylesheet" href="styles.css?v=38980263">
 </head>
 <body>
@@ -49,6 +81,7 @@
 
   <div id="menu" class="menu" hidden>
     <p class="menu-email" id="menu-email"></p>
+    <button id="btn-refresh" class="btn btn-ghost btn-sm">Check for updates</button>
     <button id="btn-signout" class="btn btn-ghost btn-sm">Sign out</button>
   </div>
 </div>
@@ -58,6 +91,6 @@
 <script src="auth.js?v=32e2b905"></script>
 <script src="tools/list.js?v=6ae396c0"></script>
 <script src="tools/feedback.js?v=82b75363"></script>
-<script src="app.js?v=6652ac27"></script>
+<script src="app.js?v=62249b54"></script>
 </body>
 </html>

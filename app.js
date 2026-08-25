@@ -34,6 +34,10 @@
   function signOut() {
     sb.auth.signOut().then(function () { window.location.reload(); });
   }
+  // iOS home-screen shortcuts have no reload button and no pull-to-refresh,
+  // so the only way out of a stale copy is a control inside the app.
+  $('btn-refresh').addEventListener('click', function () { window.SharedReload(); });
+
   $('btn-signout').addEventListener('click', signOut);
   $('btn-signout-denied').addEventListener('click', signOut);
 

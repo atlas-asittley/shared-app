@@ -77,15 +77,23 @@ Notes stay `new` until they're actually processed, so a missed run just means th
 up the next day. Nothing is lost. Log: `~/shared-app-ops/feedback-check.log`.
 
 ## Caching
-GitHub Pages serves everything with `Cache-Control: max-age=600` and offers no way to change
-that. So a browser can hold a stale copy for up to 10 minutes — and, worse, could pair a new
-`index.html` with last deploy's `styles.css`.
+GitHub Pages serves everything with `max-age=600` and allows no custom headers, so a stale
+copy normally heals itself within ten minutes.
 
-`stamp.sh` fixes the mismatch: it rewrites every local asset URL in `index.html` to
-`file.css?v=<md5 of that file>`. New content = new URL = guaranteed fresh fetch, while
-unchanged files keep their hash and stay cached. A `.git/hooks/pre-commit` hook runs it
-automatically, so it can't be forgotten.
+Every local `.js`/`.css` URL in `index.html` therefore carries a hash of that file's contents
+(`styles.css?v=1a2b3c4d`), stamped by `./stamp.sh` from `.git/hooks/pre-commit`. Changed
+files get a brand-new URL; unchanged files stay cached. This is really about *mismatch* — a
+new `index.html` paired with last deploy's `styles.css` reads as broken, not stale.
 
-What it can't fix is `index.html` itself — that one page is subject to the 10-minute window
-no matter what, because it's the thing that carries the hashes. In practice a pull-to-refresh
-revalidates it immediately (the ETag makes that cheap).
+`index.html` itself cannot be hashed that way: it is the file carrying the hashes. So it gets
+a **build id** instead, written by the same script into both the page and `version.json`. At
+startup the page fetches `version.json` with `no-store`, and if the deployed build differs
+from the one baked in, it reloads through a URL the cache has never seen. A `sessionStorage`
+guard keyed to the build being escaped *from* means a stale CDN edge can never cause a reload
+loop.
+
+That check exists for **iOS home-screen shortcuts**, which have no address bar, no reload
+button and no pull-to-refresh — nothing the user can do to escape a stale copy. The account
+menu also has a **Check for updates** button for the same reason. Android and desktop
+browsers were never affected, which is exactly how this presented: broken on her iPhone
+shortcut, fine on his Android.

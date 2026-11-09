@@ -13,13 +13,14 @@ Live: https://atlas-asittley.github.io/shared-app/
 | `auth.js` | sign in · create account · forgot password · set new password |
 | `tools/shopping.js` | the shopping list (add / check off / delete / clear) |
 | `tools/feedback.js` | notes to Claude, with the reply shown back on the note |
-| `config.js` | Supabase URL + public anon key + allowed emails + display names |
+| `config.js` | Supabase URL + public anon key (members and their names are read from `shared_members`) |
 | `styles.css` | diner theme — see below |
 | `schema.sql` | tables + RLS (already applied) |
 | `stamp.sh` | content-hashes asset URLs in `index.html` (runs on pre-commit) |
 
 ## How access is enforced
-- `config.js` lists the allowed emails, but that's only for a friendly screen.
+- After sign-in the app reads `shared_members` (RLS shows a member the roster, anyone else nothing) for the
+  friendly screen and display names; member emails are deliberately not in this public repo (2026-11-09).
 - The real lock is `public.shared_members` + RLS in Postgres. A stranger who signs up gets a
   valid session and still cannot read or write one row — verified with the anon key directly.
 - Add a third person later: `insert into shared_members (email, label) values ('x@y.com','X');`

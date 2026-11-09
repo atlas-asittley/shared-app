@@ -12,20 +12,16 @@ create table if not exists public.shared_members (
   created_at timestamptz not null default now()
 );
 
-insert into public.shared_members (email, label) values
-  ('drew@example.com', 'Drew'),
-  ('jill@example.com', 'Jill')
-on conflict (email) do nothing;
+-- The real addresses are added in the SQL editor, not committed (this repo is public):
+-- insert into public.shared_members (email, label) values
+--   ('<drew's email>', 'Drew'),
+--   ('<jill's email>', 'Jill')
+-- on conflict (email) do nothing;
 
 alter table public.shared_members enable row level security;
 
 -- Members can see the roster; nobody can change it from the browser.
-drop policy if exists "members can read roster" on public.shared_members;
-create policy "members can read roster" on public.shared_members
-  for select to authenticated
-  using (email = lower(auth.jwt() ->> 'email')
-         or exists (select 1 from public.shared_members m
-                    where m.email = lower(auth.jwt() ->> 'email')));
+-- (Its read policy comes after shared_is_member() below.)
 
 -- The gate every other table uses.
 create or replace function public.shared_is_member()
@@ -40,6 +36,14 @@ as $$
     where m.email = lower(auth.jwt() ->> 'email')
   );
 $$;
+
+-- Members see the roster (the app reads it for the gate and display names); others see only
+-- their own row. Uses shared_is_member(): an inline subquery on this same table recursed (fixed 2026-11-09).
+drop policy if exists "members can read roster" on public.shared_members;
+create policy "members can read roster" on public.shared_members
+  for select to authenticated
+  using (email = lower(auth.jwt() ->> 'email') or public.shared_is_member());
+
 
 grant execute on function public.shared_is_member() to authenticated;
 

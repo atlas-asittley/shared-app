@@ -8,7 +8,7 @@
     auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true }
   });
 
-  var allowed = cfg.ALLOWED_EMAILS.map(function (e) { return e.trim().toLowerCase(); });
+  var names = {};   // email -> label, read from shared_members after sign-in (kept out of the public code)
   var tools = window.SharedTools || [];
   var activeTool = null;
 
@@ -83,11 +83,11 @@
   var ctx = {
     sb: sb,
     user: null,
-    // "drew@example.com" -> "Drew"
+    // "drew@…" -> "Drew", from the shared_members roster
     shortName: function (email) {
       if (!email) return 'someone';
       var key = email.trim().toLowerCase();
-      var named = (cfg.NAMES || {})[key];
+      var named = names[key];
       if (named) return named;
       var n = key.split('@')[0].replace(/[._\d]+/g, ' ').trim();
       return n.charAt(0).toUpperCase() + n.slice(1);
@@ -103,12 +103,21 @@
     if (!session) { showLogin(); return; }
 
     var email = (session.user.email || '').toLowerCase();
-    if (allowed.indexOf(email) === -1) {
-      $('denied-email').textContent = session.user.email || '(unknown)';
-      show('denied');
-      return;
-    }
+    // RLS lets a member read the whole roster and anyone else only their own row (if any),
+    // so finding ourselves here is the same check the database makes.
+    sb.from('shared_members').select('email,label').then(function (res) {
+      if (res.error) { showLogin(); return; }
+      (res.data || []).forEach(function (m) { names[m.email.toLowerCase()] = m.label; });
+      if (!names[email]) {
+        $('denied-email').textContent = session.user.email || '(unknown)';
+        show('denied');
+        return;
+      }
+      enter(session, email);
+    });
+  }
 
+  function enter(session, email) {
     ctx.user = session.user;
     try { localStorage.setItem('shared:email', email); } catch (_) {}
     var meta = session.user.user_metadata || {};

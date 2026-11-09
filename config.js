@@ -4,15 +4,6 @@ window.SHARED_CONFIG = {
   SUPABASE_URL: 'https://igaulapupbtdcqqjobhs.supabase.co',
   SUPABASE_ANON_KEY: 'sb_publishable_7yi3BNg-J-K5nralw5JSww_c71Pge6e',
 
-  // Friendly gate only — the database enforces the real list (shared_members table).
-  ALLOWED_EMAILS: [
-    'drew@example.com',
-    'jill@example.com',
-  ],
-
-  // Display names, so items read "Added by Jill" instead of the raw address.
-  NAMES: {
-    'drew@example.com': 'Drew',
-    'jill@example.com': 'Jill',
-  },
+  // Who may use the app (and their display names) lives in the shared_members table, not here,
+  // so the members' email addresses aren't published in this public repo.
 };
